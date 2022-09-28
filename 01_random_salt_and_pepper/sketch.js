@@ -1,37 +1,41 @@
 let list;
+let colorFrgnH = 0;
+let colorFrgnS = 0;
+let colorFrgnL = 0;
 
 function setup() {
-  createCanvas(400, 400);
-
-  list = generate();
-  //console.log(list);
-
-  noLoop();
+  createCanvas(600, 600);
+  colorMode(HSL);
+  // noLoop();
 }
 
 function draw() {
-  background(220);
+  let colorBackground = color(0, 0, 15);
+  background(colorBackground);
+  for (let counter = 0; counter < width; counter++) {
+    list = generate(counter, width);
+    for (let paintPoints = 0; paintPoints < height; paintPoints++) {
+      strokeWeight(random(1, 2));
+      colorFrgnH = random(190, 250); //(170, 250);
+      colorFrgnS = random(50, 100); //(50, 100);
+      colorFrgnL = random(20, 80); //(20, 80);
+      stroke(colorFrgnH, colorFrgnS, colorFrgnL, random());
+      point(list[paintPoints], counter);
+    }
+  }
 }
 
-function generate() {
+function generate(randomPoints, widthExtent) {
   let arrayContainer = []; // this arrays holds the random numbers generated;
-  let randomPoints = 10;
-  let widthExtent = 50;
-
   const genNum = Math.floor(Math.random() * widthExtent) + 1;
   arrayContainer.push(genNum);
-  //console.time();
   for (let counter = 1; counter < randomPoints; counter++) {
-    //the counter is less than five because we already initialise arrayContainer[0] with genNum
     let newGen = Math.floor(Math.random() * widthExtent) + 1;
     while (arrayContainer.lastIndexOf(newGen) !== -1) {
       newGen = Math.floor(Math.random() * widthExtent) + 1;
     }
     arrayContainer.push(newGen);
   }
-  //console.timeEnd();
-  console.log(arrayContainer);
   arrayContainer.sort((a, b) => a - b);
-  console.log(arrayContainer);
   return arrayContainer;
 }
